@@ -2,7 +2,7 @@
 
 ```
 Return number of failed 404 requests and the corresponding page
- grep " 404 " access.log | cut -d ' ' -f 7 | sort | uniq -c | sort -nr | head -20
+grep " 404 " access.log | cut -d ' ' -f 7 | sort | uniq -c | sort -nr | head -20
 
 
 Return number of requests by user agent
