@@ -57,8 +57,12 @@ logparser "SELECT COUNT(*) AS [Requests], EXTRACT_PATH(cs-uri-stem) AS [Path Req
 # Windows Events Section
 ### On Desktop systems
 
+You Need to enable logging for the following items before you can use your event logs.
+**TODO**
+How to enable logging for ...
+
 ```
-**Important event IDs**
+*Important event IDs*
 
 512 / 4608  STARTUP
 513 / 4609  SHUTDOWN
@@ -98,6 +102,62 @@ Service Started or Stopped
 Total Application Errors by day (Live logs)
 LogParser "SELECT QUANTIZE(TimeGenerated, 86400) AS Day, COUNT(*) AS [Total Errors] FROM Application WHERE EventType = 1 OR EventType = 2 GROUP BY Day ORDER BY Day ASC"
 
+
+
+```
+
+
+#### Using Poweshell
+```
+List Service Errors and Installation info
+Get-WinEvent -FilterHashtable @{Path="system.evtx"; ID=7030,7045}
+
+same as above but use live system logs
+Get-WinEvent -FilterHashtable @{logname="system"; ID=7030,7045}
+
+Get USB info from event logs
+Get-WinEvent -FilterHashtable @{logname="system"} | Where {$_.Message -like "*USB*"}
+
+from offline log
+Get-WinEvent -FilterHashtable @{path="system.evtx"} | Where {$_.Message -like "*USB*"}
+
+
+
+```
+
+## Sysmon Section
+
+Event ID |   Descriptoin
+-----|-----
+ 1 | Process Created
+ 2 | A process changed a file creation time
+ 3 | Network Connection
+ 4 | Sysmon service state change
+ 5 | Process Terminated
+ 6 | Driver Loaded
+ 7 | Image Loaded
+ 8 | CreateRemoteThread
+ 9 | RawAccessRead
+10 | ProcessAccess
+11 | FileCreate
+12 | RegistryEvent (Object create and delete)
+13 | RegistryEvent (Value Set)
+14 | RegistryEvent (Key and Value Rename)
+15 | FileCreateStreamHash
+16 |
+17 | PipeEvent (Pipe Created)
+18 | PipeEvent (Pipe Connected)
+19 | WmiEvent (WmiEventFilter activity detected)
+20 | WmiEvent (WmiEventConsumer activity detected)
+21 |  WmiEvent (WmiEventConsumerToFilter activity detected)
+22 | DNSEvent (DNS query)
+255 | Error
+
+
+
+```
+Get all DNS events without info
+Get-WinEvent -FilterHashtable @{ path="sysmon.evtx"; id=22}
 
 
 ```
