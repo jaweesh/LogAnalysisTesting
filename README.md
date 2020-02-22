@@ -9,7 +9,7 @@ LogAnalysisTesting
 * README.md
 * CheatSheet.md
 * Logs
- * Apache/Nginx
- * IIS
- * Windows Event Logs
- * Sysmon Logs
+ - Apache/Nginx
+ - IIS
+ - Windows Event Logs
+ - Sysmon Logs
