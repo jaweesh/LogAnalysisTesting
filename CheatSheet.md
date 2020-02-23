@@ -11,6 +11,37 @@ cat access.log | cut -d '"' -f 6 | sort | uniq -c | sort -nr | head -20
 Return user agents ordered by the number of hits
 awk -F\" '{print $6}' access.log | sort | uniq -c | sort -fr | head -20
 
+Return number of status codes (userful to see how many 404 hits and 403 hits)
+awk '{print $9}' access.log | sort | uniq -c | sort -nr | head -20
+
+Unique Request IP Addresses
+cat access.log | awk '{ print $1 }' | sort | uniq -c | sort -rn | head -n 25
+
+
+Unique Request IP Addresses – Resolve country
+apt-get install geoip-bin
+cat access.log | awk '{ print $1 }' | sort | uniq -c | sort -rn | head -n 25 | awk '{ printf("%5d\t%-15s\t", $1, $2); system("geoiplookup " $2 " | cut -d \\: -f2 ") }'
+
+
+Reurns which IP are requesting with Blank user agents
+awk -F\" '($6 ~ /^-?$/)' access.log | awk '{print $1}' | sort | uniq
+
+
+Returns top 10 IPs
+cat access.log | awk '{ print $1 ; }' | sort | uniq -c | sort -n -r | head -n 10
+
+
+Returns top 10 user agents
+cat access.log | awk -F\" ' { print $6 } ' | sort | uniq -c | sort -rn | head -n 10
+
+Unique IPs today
+cat access.log | grep `date '+%e/%b/%G'` | awk '{print $1}' | sort | uniq -c | wc -l
+
+unique IPs this month
+cat access.* | grep `date '+%b/%G'` | awk '{print $1}' | sort | uniq -c | wc -l
+
+Most popular URLs
+cat access.log | awk '{ print $7 }' | sort | uniq -c | sort -rn | head -n 25
 
 
 ```
